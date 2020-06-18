@@ -20,8 +20,9 @@ export default class SearchOptionPicker extends React.Component {
     }
 
     handleClick(event) {
+        let target = event.currentTarget;
         this.setState(() => ({
-            anchorEl: event.currentTarget,
+            anchorEl: target,
         }));
     }
 
@@ -62,9 +63,9 @@ export default class SearchOptionPicker extends React.Component {
                         id="simple-menu"
                         anchorEl={this.state.anchorEl}
                         getContentAnchorEl={null}
+                        disablePortal={true}
                         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                         transformOrigin={{ vertical: "top", horizontal: "center" }}
-                        keepMounted
                         open={Boolean(this.state.anchorEl)}
                         onClose={() => this.handleClose(null)}
                     >

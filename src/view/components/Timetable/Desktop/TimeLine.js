@@ -1,14 +1,15 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import Grid from "@material-ui/core/Grid";
+import { makeStyles } from '@material-ui/core/styles';
 
 
-const styles = theme => ({
+const styles = makeStyles((theme) => ({
     timeLine: {
         border: "1px solid black",
         minHeight: theme.spacing(5),
     },
-});
+}));
 
 const TimeLine = ({timeSlot}) => {
     const classes = styles();

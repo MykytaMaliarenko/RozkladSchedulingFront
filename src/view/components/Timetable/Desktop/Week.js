@@ -1,93 +1,43 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import {filters} from "../../../../store/actions/classes";
 import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import MyTableHead from "./Table/MyTableHead";
+import MyTableBody from "./Table/MyTableBody";
 import Paper from '@material-ui/core/Paper';
-import Typography from "@material-ui/core/Typography";
-import AccessTimeOutlinedIcon from '@material-ui/icons/AccessTimeOutlined';
-
-import Class from "./Class";
-import TimeLine from "./TimeLine";
-
+import Serializers from "./Serializers";
 
 class Week extends React.Component {
     constructor(props) {
         super (props);
 
-        const {universityClasses} = props;
-        this.state = {
-            sortedClasses: universityClasses,
+        let currentClassSerializer;
+        switch (this.props.filter) {
+            case filters.BY_GROUP:
+                currentClassSerializer = Serializers.ClassForGroup;
+                break;
+
+            default:
+                currentClassSerializer = Serializers.ClassForGroup;
         }
+
+        this.state = {
+            currentClassSerializer
+        };
     }
 
     render() {
-        const tableTitle = (
-            <TableCell align="center" colSpan={7}>
-                <Typography variant="h6">
-                    <strong>
-                        {this.props.title}
-                    </strong>
-                </Typography>
-            </TableCell>
-        );
-
-        const tableHeadDays =
-            ["Понедельник", "Вторник", "Среда",
-            "Четверг", "Пятница", "Суббота"].map(
-                dayOfWeek => (
-                <TableCell align="left" key={dayOfWeek}>
-                    <Typography variant="h6">
-                        {dayOfWeek}
-                    </Typography>
-                </TableCell>
-            ));
-
-        const tableBody =
-            [1, 2, 3, 4, 5].map(timeSlotId => (
-                <TableRow key={timeSlotId}>
-                    <TableCell>
-                        <TimeLine
-                            timeSlot={this.props.timeSlots.find(v => v.id === timeSlotId)}
-                        />
-                    </TableCell>
-
-                    {
-                        [0, 1, 2, 3, 4, 5].map(dayOfWeek => (
-                            <TableCell component="th" scope="row" key={dayOfWeek}>
-                                <Class
-                                    {...this.state.sortedClasses[dayOfWeek][timeSlotId-1]}
-                                />
-                            </TableCell>
-                        ))
-                    }
-                </TableRow>
-        ))
-
         return (
             <TableContainer component={Paper}>
-                <Table size="small" aria-label="a dense table">
+                <Table size="small">
+                    <MyTableHead title={this.props.title} />
 
-                    <TableHead>
-                        <TableRow>
-                            {tableTitle}
-                        </TableRow>
-
-                        <TableRow>
-                            <TableCell>
-                                <AccessTimeOutlinedIcon />
-                            </TableCell>
-
-                            {tableHeadDays}
-                        </TableRow>
-                    </TableHead>
-
-                    <TableBody>
-                        {tableBody}
-                    </TableBody>
+                    <MyTableBody
+                        classes={this.props.classes}
+                        timeSlots={this.props.timeSlots}
+                        ClassSerializer={this.state.currentClassSerializer}
+                    />
                 </Table>
             </TableContainer>
         )
@@ -96,7 +46,7 @@ class Week extends React.Component {
 }
 
 Week.propTypes = {
-    universityClasses: PropTypes.array.isRequired,
+    classes: PropTypes.array.isRequired,
 
     timeSlots: PropTypes.arrayOf(
         PropTypes.shape({
@@ -107,6 +57,7 @@ Week.propTypes = {
     ),
 
     title: PropTypes.string.isRequired,
+    filter: PropTypes.string.isRequired,
 }
 
 export default Week;

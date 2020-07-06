@@ -60,7 +60,7 @@ class Search extends React.Component {
         const searchOptionsNames = this.state.searchByOptions.map(option => option.optionName);
 
         return (
-            <Paper className={classes.searchRoot}>
+            <Paper className={classes.searchRoot} elevation={'3'}>
                 <SearchOptionPicker
                     searchOptions={searchOptionsNames}
                     onSelect={this.onSearchOptionSelect}

@@ -3,7 +3,7 @@ const homeRoutes = {
 };
 
 const schedulePreviewRoutes = {
-    schedulePreviewByGroup: "/schedule/group/:groupName",
+    schedulePreviewByGroup: "/schedule/group/:group",
     schedulePreviewByUniversityBuilding: "/schedule/building/:buildingName",
     schedulePreviewByTeacher: "/schedule/teacher/:teacherName",
     schedulePreviewByRoom: "/schedule/room/:roomName",

@@ -27,7 +27,9 @@ export default (state = defaultState, action) => {
                 ...state,
                 isFetching: false,
                 data: {
+                    ...state.data,
                     [action.filter]: {
+                        ...state.data[action.filter],
                         [action.payload.group]: action.payload.classes
                     }
                 }

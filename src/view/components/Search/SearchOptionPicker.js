@@ -71,6 +71,7 @@ export default class SearchOptionPicker extends React.Component {
                     >
                         {this.props.searchOptions.map((option, index) => (
                             <MenuItem
+                                key={option}
                                 selected={index === this.state.selectedOptionIndex}
                                 onClick={() => this.handleClose(index)}
                             >

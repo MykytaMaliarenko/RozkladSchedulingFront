@@ -1,9 +1,14 @@
 import React from "react";
+import {connect} from "react-redux";
+import { push } from 'connected-react-router'
+import routes from "../../routes";
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -24,16 +29,39 @@ const NavBar = (props) => {
     return (
         <div className={classes.root}>
             <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h5" className={classes.title}>
-                        Rozklad Scheduling
-                    </Typography>
+                <Toolbar variant={"dense"}>
+                    <Container maxWidth={"sm"}>
+                        <Grid
+                            container
+                            direction="row"
+                            justify="flex-start"
+                            alignItems="baseline"
+                            spacing={2}
+                        >
+                            <Grid item>
+                                <Typography variant="h6" className={classes.title}>
+                                    Rozklad Scheduling
+                                </Typography>
+                            </Grid>
 
-                    <Button color="inherit">Login</Button>
+                            <Grid item>
+                                <Link
+                                    component="button"
+                                    variant="body1"
+                                    color="inherit"
+                                    onClick={() => {
+                                        props.dispatch(push(routes.home))
+                                    }}
+                                >
+                                    Поиск
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </Container>
                 </Toolbar>
             </AppBar>
         </div>
     );
 }
 
-export default NavBar;
+export default connect()(NavBar);

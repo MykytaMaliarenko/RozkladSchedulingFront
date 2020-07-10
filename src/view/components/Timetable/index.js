@@ -68,7 +68,7 @@ class TimeTable extends React.Component {
                 <DesktopTimeTable
                     universityClasses={classesData}
                     timeSlots={this.props.timeSlots.data}
-                    filter={this.props.currentFilter}
+                    filter={this.state.currentFilter}
                 />
             )
         }

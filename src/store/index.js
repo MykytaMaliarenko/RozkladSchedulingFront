@@ -23,9 +23,7 @@ export default function configureStore(preloadedState) {
     const store = createStore(
         createRootReducer(history),
         preloadedState,
-        compose(
-            getMiddleware(),
-        ),
+        getMiddleware(),
     )
 
     return store

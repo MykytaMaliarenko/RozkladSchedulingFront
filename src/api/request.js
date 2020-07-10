@@ -3,18 +3,25 @@ import _superagent from 'superagent';
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
-const API_ROOT = process.env.mode === 'development' ?
+const API_ROOT = process.env.NODE_ENV === 'development' ?
     process.env["REACT_APP_API_ROOT_DEV"] : process.env["REACT_APP_API_ROOT_PROD"];
 
 const responseBody = res => res.body;
 
 const requests = {
+    rawGet: url =>
+        superagent
+            .get(`${API_ROOT}/${url}`)
+            .type('json')
+            .withCredentials(),
+
     get: url =>
         superagent
             .get(`${API_ROOT}/${url}`)
             .type('json')
             .withCredentials()
             .then(responseBody),
+
     post: (url, body) =>
         superagent.post(`${API_ROOT}/${url}`, body).withCredentials().then(responseBody),
 };

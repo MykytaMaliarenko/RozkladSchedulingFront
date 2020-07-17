@@ -14,8 +14,24 @@ class DesktopTimeTable extends React.Component {
     constructor(props) {
         super (props);
 
+        this.sortData = this.sortData.bind(this);
+
+        this.state = {
+            sortedClasses: this.sortData(),
+        };
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.universityClasses !== this.props.universityClasses ||
+            prevProps.filter !== this.props.filter)
+            this.setState({
+                sortedClasses: this.sortData(),
+            })
+    }
+
+    sortData() {
         let {universityClasses} = this.props;
-        const sortedClasses = [1, 2].map(currentWeekNumber => {
+        return [1, 2].map(currentWeekNumber => {
             let classesByWeek = universityClasses.filter(v => v.weekNumber === currentWeekNumber);
             return [1, 2, 3, 4, 5, 6].map(currentDayOfWeek => {
                 let classesByDayOfWeek = classesByWeek.filter(v => v.dayOfWeek === currentDayOfWeek);
@@ -24,10 +40,6 @@ class DesktopTimeTable extends React.Component {
                 );
             })
         });
-
-        this.state = {
-            sortedClasses,
-        }
     }
 
     render() {

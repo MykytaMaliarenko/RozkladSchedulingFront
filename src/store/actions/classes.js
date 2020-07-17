@@ -1,7 +1,8 @@
 import api from '../../api'
 
 export const filters = {
-    BY_GROUP: "BY_GROUP"
+    BY_GROUP: "BY_GROUP",
+    BY_ROOM: "BY_ROOM"
 }
 
 export const FETCH_CLASSES_BEGIN = "FETCH_CLASSES_BEGIN";
@@ -38,7 +39,7 @@ export function fetchClasses(filter, apiMethod, apiPayload) {
 
         if (result) {
             let payload = {
-                ...apiPayload,
+                apiPayload,
                 classes: result,
             };
 
@@ -55,11 +56,20 @@ export function fetchClassesByGroupIfNeeded(group) {
     }
 }
 
+export function fetchClassesByRoomIfNeeded(room) {
+    return async (dispatch, getState) => {
+        let classesByRoom = getState().classes.data[filters.BY_ROOM];
+        if (!classesByRoom[room])
+            dispatch(fetchClasses(filters.BY_ROOM, api.Classes.getByRoom, room))
+    }
+}
+
 
 export default {
     FETCH_CLASSES_BEGIN,
     FETCH_CLASSES_SUCCESS,
     FETCH_CLASSES_FAILURE,
     fetchClassesByGroupIfNeeded,
+    fetchClassesByRoomIfNeeded,
     filters,
 };

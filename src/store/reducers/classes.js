@@ -10,6 +10,7 @@ const defaultState = {
     hasError: false,
     data: {
         [filters.BY_GROUP]: {},
+        [filters.BY_ROOM]: {}
     },
 };
 

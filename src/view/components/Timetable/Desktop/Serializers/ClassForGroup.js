@@ -3,6 +3,10 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
+import Link from "@material-ui/core/Link";
+import {push} from "connected-react-router";
+import routes from "../../../../../routes";
+import {connect} from "react-redux";
 
 const NAME_MAX_LENGTH = 30;
 
@@ -39,13 +43,20 @@ class ClassForGroup extends React.Component {
             )
 
         let roomSection;
-        if (room)
+        if (room) {
+            let roomUrl = routes.schedulePreviewByRoom.replace(':room', room.id)
             roomSection = (
                 <Typography variant="caption">
-                    {room.name}
+                    <Link
+                        component="button"
+                        onClick={() => this.props.dispatch(push(roomUrl))}
+                    >
+                        {room.name}
+                    </Link>
                     -{room.universityBuilding} {type}
                 </Typography>
             )
+        }
 
         return (
             <Grid
@@ -84,4 +95,4 @@ ClassForGroup.propTypes = {
     }),
 };
 
-export default ClassForGroup;
+export default connect()(ClassForGroup);

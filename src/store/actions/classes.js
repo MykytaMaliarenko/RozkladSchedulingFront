@@ -25,22 +25,25 @@ export const fetchClassesFailure = (filter, error) => ({
     error,
 })
 
-export function fetchClassesByGroup(group) {
+export function fetchClasses(filter, apiMethod, apiPayload) {
     return async (dispatch) => {
-        dispatch(fetchClassesBegin(filters.BY_GROUP, group));
+        dispatch(fetchClassesBegin(filter, apiPayload));
 
         let result = null;
         try {
-            result = await api.Classes.getByGroup(group);
+            result = await apiMethod(apiPayload);
         } catch (error) {
-            dispatch(fetchClassesFailure(filters.BY_GROUP, error));
+            dispatch(fetchClassesFailure(filter, error));
         }
 
-        if (result)
-            dispatch(fetchClassesSuccess(filters.BY_GROUP, {
-                group,
-                classes: result
-            }));
+        if (result) {
+            let payload = {
+                ...apiPayload,
+                classes: result,
+            };
+
+            dispatch(fetchClassesSuccess(filter, payload));
+        }
     }
 }
 
@@ -48,7 +51,7 @@ export function fetchClassesByGroupIfNeeded(group) {
     return async (dispatch, getState) => {
         let classesByGroup = getState().classes.data[filters.BY_GROUP];
         if (!classesByGroup[group])
-            dispatch(fetchClassesByGroup(group));
+            dispatch(fetchClasses(filters.BY_GROUP, api.Classes.getByGroup, group));
     }
 }
 
@@ -57,7 +60,6 @@ export default {
     FETCH_CLASSES_BEGIN,
     FETCH_CLASSES_SUCCESS,
     FETCH_CLASSES_FAILURE,
-    fetchClassesByGroup,
     fetchClassesByGroupIfNeeded,
     filters,
 };

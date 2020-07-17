@@ -30,7 +30,7 @@ export default (state = defaultState, action) => {
                     ...state.data,
                     [action.filter]: {
                         ...state.data[action.filter],
-                        [action.payload.group]: action.payload.classes
+                        [action.payload.apiPayload]: action.payload.classes
                     }
                 }
             }

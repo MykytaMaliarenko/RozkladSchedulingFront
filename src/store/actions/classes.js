@@ -43,6 +43,7 @@ export function fetchClasses(filter, apiMethod, apiPayload) {
                 classes: result,
             };
 
+            dispatch(unloadRandomClassIfNeeded());
             dispatch(fetchClassesSuccess(filter, payload));
         }
     }
@@ -61,6 +62,28 @@ export function fetchClassesByRoomIfNeeded(room) {
         let classesByRoom = getState().classes.data[filters.BY_ROOM];
         if (!classesByRoom[room])
             dispatch(fetchClasses(filters.BY_ROOM, api.Classes.getByRoom, room))
+    }
+}
+
+
+const MAX_CLASSES_SIZE = 10;
+export const CLASSES_UNLOAD = "CLASSES_UNLOAD";
+export const classesUnload = (filter, key) => ({
+    type: CLASSES_UNLOAD,
+    filter,
+    key
+})
+
+export function unloadRandomClassIfNeeded() {
+    return async (dispatch, getState) => {
+        let totalSize = getState().classes.data.totalSize;
+        if (totalSize >= MAX_CLASSES_SIZE) {
+            let data = getState().classes.data;
+            let filtersSortedBySize = Object.values(filters).sort(
+                (a, b) => Object.keys(data[b]).length - Object.keys(data[a]).length
+            );
+            dispatch(classesUnload(filtersSortedBySize[0], Object.keys(data[filtersSortedBySize[0]])[0]));
+        }
     }
 }
 

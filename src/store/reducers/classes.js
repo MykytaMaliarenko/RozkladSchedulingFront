@@ -2,6 +2,7 @@ import {
     FETCH_CLASSES_BEGIN,
     FETCH_CLASSES_FAILURE,
     FETCH_CLASSES_SUCCESS,
+    CLASSES_UNLOAD,
     filters
 } from "../actions/classes"
 
@@ -10,7 +11,9 @@ const defaultState = {
     hasError: false,
     data: {
         [filters.BY_GROUP]: {},
-        [filters.BY_ROOM]: {}
+        [filters.BY_ROOM]: {},
+
+        totalSize: 0,
     },
 };
 
@@ -32,7 +35,8 @@ export default (state = defaultState, action) => {
                     [action.filter]: {
                         ...state.data[action.filter],
                         [action.payload.apiPayload]: action.payload.classes
-                    }
+                    },
+                    totalSize: state.data.totalSize + 1,
                 }
             }
 
@@ -41,6 +45,19 @@ export default (state = defaultState, action) => {
                 ...state,
                 isFetching: false,
                 hasError: true,
+            }
+
+
+        case CLASSES_UNLOAD:
+            let data = Object.assign({}, state.data);
+            delete data[action.filter][action.key];
+
+            return {
+                ...state,
+                data: {
+                    ...data,
+                    totalSize: state.data.totalSize - 1,
+                }
             }
 
         default:

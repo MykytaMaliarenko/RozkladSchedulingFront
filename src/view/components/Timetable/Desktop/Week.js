@@ -12,19 +12,36 @@ class Week extends React.Component {
     constructor(props) {
         super (props);
 
+        this.getCurrentSerializer = this.getCurrentSerializer.bind(this);
+
+        this.state = {
+            currentClassSerializer: this.getCurrentSerializer(),
+        };
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.filter !== this.props.filter)
+            this.setState({
+                currentClassSerializer: this.getCurrentSerializer(),
+            })
+    }
+
+    getCurrentSerializer() {
         let currentClassSerializer;
         switch (this.props.filter) {
             case filters.BY_GROUP:
                 currentClassSerializer = Serializers.ClassForGroup;
                 break;
 
+            case filters.BY_ROOM:
+                currentClassSerializer = Serializers.ClassForRoom;
+                break;
+
             default:
                 currentClassSerializer = Serializers.ClassForGroup;
         }
 
-        this.state = {
-            currentClassSerializer
-        };
+        return currentClassSerializer;
     }
 
     render() {

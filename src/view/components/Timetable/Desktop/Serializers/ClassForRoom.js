@@ -3,17 +3,16 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
-import Link from "@material-ui/core/Link";
-import {push} from "connected-react-router";
-import routes from "../../../../../routes";
 import {connect} from "react-redux";
-import Box from "@material-ui/core/Box";
+import routes from "../../../../../routes";
+import {push} from "connected-react-router";
+import Link from "@material-ui/core/Link";
 
 const NAME_MAX_LENGTH = 30;
 
-class ClassForGroup extends React.Component {
+class ClassForRoom extends React.Component {
     render() {
-        const {name, type, teacher, room} = this.props;
+        const {name, teacher, group} = this.props;
 
         let nameSection;
         if (name.length > NAME_MAX_LENGTH)
@@ -43,23 +42,17 @@ class ClassForGroup extends React.Component {
                 </Typography>
             )
 
-        let roomSection;
-        if (room) {
-            let roomUrl = routes.schedulePreviewByRoom.replace(':room', room.id)
-            roomSection = (
-                <Box>
-                    <Link
-                        variant="caption"
-                        component="button"
-                        onClick={() => this.props.dispatch(push(roomUrl))}
-                    >
-                        {room.name}
-                    </Link>
-
-                    <Typography variant="caption">
-                        -{room.universityBuilding} {type}
-                    </Typography>
-                </Box>
+        let groupSection;
+        if (group) {
+            let groupUrl = routes.schedulePreviewByGroup.replace(':group', group.id)
+            groupSection = (
+                <Link
+                    variant="caption"
+                    component="button"
+                    onClick={() => this.props.dispatch(push(groupUrl))}
+                >
+                    {group.name}
+                </Link>
             )
         }
 
@@ -79,14 +72,14 @@ class ClassForGroup extends React.Component {
                 </Grid>
 
                 <Grid item xs>
-                    {roomSection}
+                    {groupSection}
                 </Grid>
             </Grid>
         )
     }
 }
 
-ClassForGroup.propTypes = {
+ClassForRoom.propTypes = {
     name: PropTypes.string.isRequired,
     type: PropTypes.string,
 
@@ -94,10 +87,10 @@ ClassForGroup.propTypes = {
         officialName: PropTypes.string.isRequired,
     }),
 
-    room: PropTypes.shape({
+    group: PropTypes.shape({
+        id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
-        universityBuilding: PropTypes.number.isRequired,
     }),
 };
 
-export default connect()(ClassForGroup);
+export default connect()(ClassForRoom);

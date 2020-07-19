@@ -6,7 +6,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TimeLine from "../TimeLine";
 
 const MyTableBody = (props) => {
-    const {highlightEmptySlots, showTimeLine,
+    const {showTimeLine,
         classes, timeSlots, ClassSerializer} = props;
 
     return (
@@ -56,7 +56,6 @@ MyTableBody.defaultProps = {
 }
 
 MyTableBody.propTypes = {
-    highlightEmptySlots: PropTypes.bool,
     showTimeLine: PropTypes.bool,
 
     classes: PropTypes.array.isRequired,

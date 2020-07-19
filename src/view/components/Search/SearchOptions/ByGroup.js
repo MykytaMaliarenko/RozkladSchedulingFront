@@ -19,8 +19,8 @@ const mapStateToProps = state => {
 };
 
 class ByGroup extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             open: false,

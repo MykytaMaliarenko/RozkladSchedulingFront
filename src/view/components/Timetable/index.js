@@ -34,17 +34,34 @@ class TimeTable extends React.Component {
         this.state = {
             currentFilter: null,
             payload: null,
-        }
+        };
+
+        this.loadData = this.loadData.bind(this);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.match.params !== this.props.match.params)
+            this.loadData();
     }
 
     componentDidMount() {
-        const { group } = this.props.match.params;
+        this.loadData();
+    }
+
+    loadData() {
+        const { group, room } = this.props.match.params;
 
         if (group) {
             this.props.dispatch(actions.classes.fetchClassesByGroupIfNeeded(group));
             this.setState({
                 currentFilter: filters.BY_GROUP,
                 payload: group,
+            });
+        } else if (room) {
+            this.props.dispatch(actions.classes.fetchClassesByRoomIfNeeded(room));
+            this.setState({
+                currentFilter: filters.BY_ROOM,
+                payload: room,
             });
         }
 

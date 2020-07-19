@@ -7,6 +7,7 @@ import Link from "@material-ui/core/Link";
 import {push} from "connected-react-router";
 import routes from "../../../../../routes";
 import {connect} from "react-redux";
+import Box from "@material-ui/core/Box";
 
 const NAME_MAX_LENGTH = 30;
 
@@ -46,15 +47,19 @@ class ClassForGroup extends React.Component {
         if (room) {
             let roomUrl = routes.schedulePreviewByRoom.replace(':room', room.id)
             roomSection = (
-                <Typography variant="caption">
+                <Box>
                     <Link
+                        variant="caption"
                         component="button"
                         onClick={() => this.props.dispatch(push(roomUrl))}
                     >
                         {room.name}
                     </Link>
-                    -{room.universityBuilding} {type}
-                </Typography>
+
+                    <Typography variant="caption">
+                        -{room.universityBuilding} {type}
+                    </Typography>
+                </Box>
             )
         }
 

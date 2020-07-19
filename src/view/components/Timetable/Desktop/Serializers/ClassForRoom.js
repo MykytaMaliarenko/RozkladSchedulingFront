@@ -46,14 +46,13 @@ class ClassForRoom extends React.Component {
         if (group) {
             let groupUrl = routes.schedulePreviewByGroup.replace(':group', group.id)
             groupSection = (
-                <Typography variant="caption">
-                    <Link
-                        component="button"
-                        onClick={() => this.props.dispatch(push(groupUrl))}
-                    >
-                        {group.name}
-                    </Link>
-                </Typography>
+                <Link
+                    variant="caption"
+                    component="button"
+                    onClick={() => this.props.dispatch(push(groupUrl))}
+                >
+                    {group.name}
+                </Link>
             )
         }
 

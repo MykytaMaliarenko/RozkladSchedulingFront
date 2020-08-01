@@ -5,7 +5,7 @@ const homeRoutes = {
 const schedulePreviewRoutes = {
     schedulePreviewByGroup: "/schedule/group/:group",
     schedulePreviewByUniversityBuilding: "/schedule/building/:buildingName",
-    schedulePreviewByTeacher: "/schedule/teacher/:teacherName",
+    schedulePreviewByTeacher: "/schedule/teacher/:teacher",
     schedulePreviewByRoom: "/schedule/room/:room",
 }
 

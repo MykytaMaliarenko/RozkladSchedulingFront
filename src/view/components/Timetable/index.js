@@ -49,7 +49,7 @@ class TimeTable extends React.Component {
     }
 
     loadData() {
-        const { group, room } = this.props.match.params;
+        const { group, room, teacher } = this.props.match.params;
 
         if (group) {
             this.props.dispatch(actions.classes.fetchClassesByGroupIfNeeded(group));
@@ -63,7 +63,13 @@ class TimeTable extends React.Component {
                 currentFilter: filters.BY_ROOM,
                 payload: room,
             });
-        }
+        } else if (teacher) {
+        this.props.dispatch(actions.classes.fetchClassesByTeacherIfNeeded(teacher));
+        this.setState({
+            currentFilter: filters.BY_TEACHER,
+            payload: teacher,
+        });
+    }
 
         this.props.dispatch(actions.timeSlots.fetchTimeSlotsIfNeeded());
     }

@@ -28,7 +28,11 @@ const App = () => {
                             <Home />
                         </Route>
 
-                        <Route exact path={[routes.schedulePreviewByGroup, routes.schedulePreviewByRoom]}>
+                        <Route exact path={[
+                            routes.schedulePreviewByGroup,
+                            routes.schedulePreviewByRoom,
+                            routes.schedulePreviewByTeacher
+                        ]}>
                             <TimeTable />
                         </Route>
                     </Switch>

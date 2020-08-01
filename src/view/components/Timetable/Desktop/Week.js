@@ -37,6 +37,10 @@ class Week extends React.Component {
                 currentClassSerializer = Serializers.ClassForRoom;
                 break;
 
+            case filters.BY_TEACHER:
+                currentClassSerializer = Serializers.ClassForTeacher;
+                break;
+
             default:
                 currentClassSerializer = Serializers.ClassForGroup;
         }

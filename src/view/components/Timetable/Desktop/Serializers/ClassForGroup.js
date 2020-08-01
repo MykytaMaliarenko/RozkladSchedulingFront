@@ -1,5 +1,4 @@
 import React from 'react';
-import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
@@ -8,40 +7,25 @@ import {push} from "connected-react-router";
 import routes from "../../../../../routes";
 import {connect} from "react-redux";
 import Box from "@material-ui/core/Box";
-
-const NAME_MAX_LENGTH = 30;
+import ClassNameSection from "./helpers/ClassNameSection";
 
 class ClassForGroup extends React.Component {
     render() {
         const {name, type, teacher, room} = this.props;
 
-        let nameSection;
-        if (name.length > NAME_MAX_LENGTH)
-            nameSection = (
-                <Tooltip title={name}>
-                    <Typography variant="body2">
-                        <strong>
-                            {name.substring(0, NAME_MAX_LENGTH - 2) + '..'}
-                        </strong>
-                    </Typography>
-                </Tooltip>
-            )
-        else
-            nameSection = (
-                <Typography variant="body2">
-                    <strong>
-                        {name}
-                    </strong>
-                </Typography>
-            )
-
         let teacherSection;
-        if (teacher)
+        if (teacher) {
+            let teacherUrl = routes.schedulePreviewByTeacher.replace(':teacher', teacher.id);
             teacherSection = (
-                <Typography variant="caption">
+                <Link
+                    variant="caption"
+                    component="button"
+                    onClick={() => this.props.dispatch(push(teacherUrl))}
+                >
                     {teacher.officialName}
-                </Typography>
+                </Link>
             )
+        }
 
         let roomSection;
         if (room) {
@@ -71,7 +55,7 @@ class ClassForGroup extends React.Component {
                 alignItems="flex-start"
             >
                 <Grid item xs>
-                    {nameSection}
+                    <ClassNameSection name={name} />
                 </Grid>
 
                 <Grid item xs>

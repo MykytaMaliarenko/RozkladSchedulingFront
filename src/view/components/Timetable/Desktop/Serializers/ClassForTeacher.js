@@ -1,5 +1,4 @@
 import React from 'react';
-import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
@@ -8,32 +7,11 @@ import {push} from "connected-react-router";
 import Link from "@material-ui/core/Link";
 import Box from "@material-ui/core/Box";
 import GroupsSection from "./helpers/GroupsSection";
-
-const NAME_MAX_LENGTH = 30;
+import ClassNameSection from "./helpers/ClassNameSection";
 
 class ClassForTeacher extends React.Component {
     render() {
         const {name, type, room, groups} = this.props;
-
-        let nameSection;
-        if (name.length > NAME_MAX_LENGTH)
-            nameSection = (
-                <Tooltip title={name}>
-                    <Typography variant="body2">
-                        <strong>
-                            {name.substring(0, NAME_MAX_LENGTH - 2) + '..'}
-                        </strong>
-                    </Typography>
-                </Tooltip>
-            )
-        else
-            nameSection = (
-                <Typography variant="body2">
-                    <strong>
-                        {name}
-                    </strong>
-                </Typography>
-            )
 
         let roomSection;
         if (room) {
@@ -63,7 +41,7 @@ class ClassForTeacher extends React.Component {
                 alignItems="flex-start"
             >
                 <Grid item xs>
-                    {nameSection}
+                    <ClassNameSection name={name} />
                 </Grid>
 
                 <Grid item xs>

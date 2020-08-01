@@ -20,9 +20,9 @@ export const searchGroupFailure = (error) => ({
     error
 });
 
-export const SEARCH_UNLOAD = "SEARCH_UNLOAD";
-export const searchUnload = () => ({
-    type: SEARCH_UNLOAD,
+export const SEARCH_GROUP_UNLOAD = "SEARCH_GROUP_UNLOAD";
+export const searchGroupUnload = () => ({
+    type: SEARCH_GROUP_UNLOAD,
 });
 
 export function searchGroup(query) {
@@ -46,12 +46,12 @@ export function searchGroup(query) {
     }
 }
 
-export function searchStop() {
+export function searchGroupStop() {
     return async (dispatch, getState) => {
         let prevRequest = getState().groups.search.query;
         if (prevRequest)
             prevRequest.abort();
 
-        dispatch(searchUnload());
+        dispatch(searchGroupUnload());
     }
 }

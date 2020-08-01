@@ -2,7 +2,7 @@ import {
     SEARCH_GROUP_BEGIN,
     SEARCH_GROUP_FAILURE,
     SEARCH_GROUP_SUCCESS,
-    SEARCH_UNLOAD
+    SEARCH_GROUP_UNLOAD
 } from "../actions/groups"
 
 const defaultState = {
@@ -51,7 +51,7 @@ export default (state = defaultState, action) => {
                 }
             }
 
-        case SEARCH_UNLOAD:
+        case SEARCH_GROUP_UNLOAD:
             return defaultState;
 
         default:

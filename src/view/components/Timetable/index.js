@@ -64,11 +64,11 @@ class TimeTable extends React.Component {
                 payload: room,
             });
         } else if (teacher) {
-        this.props.dispatch(actions.classes.fetchClassesByTeacherIfNeeded(teacher));
-        this.setState({
-            currentFilter: filters.BY_TEACHER,
-            payload: teacher,
-        });
+            this.props.dispatch(actions.classes.fetchClassesByTeacherIfNeeded(teacher));
+            this.setState({
+                currentFilter: filters.BY_TEACHER,
+                payload: teacher,
+            });
     }
 
         this.props.dispatch(actions.timeSlots.fetchTimeSlotsIfNeeded());

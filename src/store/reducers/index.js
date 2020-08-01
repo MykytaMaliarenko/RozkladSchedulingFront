@@ -5,6 +5,7 @@ import timeSlots from "./timeSlots";
 import classes from "./classes";
 import groups from "./groups";
 import rooms from "./rooms";
+import teachers from "./teachers";
 
 
 export const createRootReducer = (history) => combineReducers({
@@ -12,5 +13,6 @@ export const createRootReducer = (history) => combineReducers({
     timeSlots,
     classes,
     groups,
-    rooms
+    rooms,
+    teachers
 });

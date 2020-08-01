@@ -12,6 +12,7 @@ const defaultState = {
     data: {
         [filters.BY_GROUP]: {},
         [filters.BY_ROOM]: {},
+        [filters.BY_TEACHER]: {},
 
         totalSize: 0,
     },

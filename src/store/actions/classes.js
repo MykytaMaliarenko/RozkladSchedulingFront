@@ -2,7 +2,8 @@ import api from '../../api'
 
 export const filters = {
     BY_GROUP: "BY_GROUP",
-    BY_ROOM: "BY_ROOM"
+    BY_ROOM: "BY_ROOM",
+    BY_TEACHER: "BY_TEACHER"
 }
 
 export const FETCH_CLASSES_BEGIN = "FETCH_CLASSES_BEGIN";
@@ -65,6 +66,14 @@ export function fetchClassesByRoomIfNeeded(room) {
     }
 }
 
+export function fetchClassesByTeacherIfNeeded(teacher) {
+    return async (dispatch, getState) => {
+        let classesByTeacher = getState().classes.data[filters.BY_TEACHER];
+        if (!classesByTeacher[teacher])
+            dispatch(fetchClasses(filters.BY_TEACHER, api.Classes.getByTeacher, teacher))
+    }
+}
+
 
 const MAX_CLASSES_SIZE = 10;
 export const CLASSES_UNLOAD = "CLASSES_UNLOAD";
@@ -94,5 +103,6 @@ export default {
     FETCH_CLASSES_FAILURE,
     fetchClassesByGroupIfNeeded,
     fetchClassesByRoomIfNeeded,
+    fetchClassesByTeacherIfNeeded,
     filters,
 };

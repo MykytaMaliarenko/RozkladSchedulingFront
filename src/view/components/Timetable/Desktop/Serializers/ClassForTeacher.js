@@ -6,8 +6,8 @@ import routes from "../../../../../routes";
 import {push} from "connected-react-router";
 import Link from "@material-ui/core/Link";
 import Box from "@material-ui/core/Box";
-import GroupsSection from "./helpers/GroupsSection";
-import ClassNameSection from "./helpers/ClassNameSection";
+import GroupsSection from "./sections/GroupsSection";
+import ClassNameSection from "./sections/ClassNameSection";
 
 class ClassForTeacher extends React.Component {
     render() {

@@ -2,12 +2,12 @@ import React from 'react';
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
-import GroupsSection from "./helpers/GroupsSection";
+import GroupsSection from "./sections/GroupsSection";
 import routes from "../../../../../routes";
 import Link from "@material-ui/core/Link";
 import {push} from "connected-react-router";
 import {connect} from "react-redux";
-import ClassNameSection from "./helpers/ClassNameSection";
+import ClassNameSection from "./sections/ClassNameSection";
 
 class ClassForRoom extends React.Component {
     render() {

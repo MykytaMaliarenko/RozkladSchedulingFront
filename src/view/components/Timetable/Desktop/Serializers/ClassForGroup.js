@@ -7,7 +7,7 @@ import {push} from "connected-react-router";
 import routes from "../../../../../routes";
 import {connect} from "react-redux";
 import Box from "@material-ui/core/Box";
-import ClassNameSection from "./helpers/ClassNameSection";
+import ClassNameSection from "./sections/ClassNameSection";
 
 class ClassForGroup extends React.Component {
     render() {

@@ -11,7 +11,8 @@ import ClassNameSection from "./sections/ClassNameSection";
 
 class ClassForTeacher extends React.Component {
     render() {
-        const {name, type, room, groups} = this.props;
+        const {classes} = this.props;
+        const {name, type, room, groups} = classes && classes.length === 1 ? classes[0] : {};
 
         let roomSection;
         if (room) {
@@ -33,6 +34,18 @@ class ClassForTeacher extends React.Component {
             )
         }
 
+        let nameSection;
+        if (name)
+            nameSection = (
+                <ClassNameSection name={name} />
+            )
+
+        let groupsSection;
+        if (groups)
+            groupsSection = (
+                <GroupsSection groups={groups}/>
+            )
+
         return (
             <Grid
                 container
@@ -41,7 +54,7 @@ class ClassForTeacher extends React.Component {
                 alignItems="flex-start"
             >
                 <Grid item xs>
-                    <ClassNameSection name={name} />
+                    {nameSection}
                 </Grid>
 
                 <Grid item xs>
@@ -49,30 +62,30 @@ class ClassForTeacher extends React.Component {
                 </Grid>
 
                 <Grid item xs>
-                    <GroupsSection
-                        groups={groups}
-                    />
+                    {groupsSection}
                 </Grid>
             </Grid>
         )
     }
 }
 
-ClassForTeacher.propTypes = {
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string,
-
-    room: PropTypes.shape({
+ClassForTeacher.propTypes = PropTypes.arrayOf(
+    PropTypes.shape({
         name: PropTypes.string.isRequired,
-        universityBuilding: PropTypes.number.isRequired,
-    }),
+        type: PropTypes.string,
 
-    groups: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number.isRequired,
+        room: PropTypes.shape({
             name: PropTypes.string.isRequired,
-        })
-    ),
-};
+            universityBuilding: PropTypes.number.isRequired,
+        }),
+
+        groups: PropTypes.arrayOf(
+            PropTypes.shape({
+                id: PropTypes.number.isRequired,
+                name: PropTypes.string.isRequired,
+            })
+        ),
+    })
+);
 
 export default ClassForTeacher;

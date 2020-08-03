@@ -69,7 +69,7 @@ class TimeTable extends React.Component {
                 currentFilter: filters.BY_TEACHER,
                 payload: teacher,
             });
-    }
+        }
 
         this.props.dispatch(actions.timeSlots.fetchTimeSlotsIfNeeded());
     }

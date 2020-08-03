@@ -11,13 +11,15 @@ import ClassNameSection from "./sections/ClassNameSection";
 
 class ClassForGroup extends React.Component {
     render() {
-        const {name, type, teacher, room} = this.props;
+        const {classes} = this.props;
+        const {name, type, teacher, room} = classes && classes.length === 1 ? classes[0] : {};
 
         let teacherSection;
         if (teacher) {
             let teacherUrl = routes.schedulePreviewByTeacher.replace(':teacher', teacher.id);
             teacherSection = (
                 <Link
+                    style={{'textAlign': 'left'}}
                     variant="caption"
                     component="button"
                     onClick={() => this.props.dispatch(push(teacherUrl))}
@@ -47,6 +49,12 @@ class ClassForGroup extends React.Component {
             )
         }
 
+        let nameSection;
+        if (name)
+            nameSection = (
+                <ClassNameSection name={name} />
+            )
+
         return (
             <Grid
                 container
@@ -55,7 +63,7 @@ class ClassForGroup extends React.Component {
                 alignItems="flex-start"
             >
                 <Grid item xs>
-                    <ClassNameSection name={name} />
+                    {nameSection}
                 </Grid>
 
                 <Grid item xs>
@@ -71,17 +79,21 @@ class ClassForGroup extends React.Component {
 }
 
 ClassForGroup.propTypes = {
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string,
+    classes: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            type: PropTypes.string,
 
-    teacher: PropTypes.shape({
-        officialName: PropTypes.string.isRequired,
-    }),
+            teacher: PropTypes.shape({
+                officialName: PropTypes.string.isRequired,
+            }),
 
-    room: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        universityBuilding: PropTypes.number.isRequired,
-    }),
-};
+            room: PropTypes.shape({
+                name: PropTypes.string.isRequired,
+                universityBuilding: PropTypes.number.isRequired,
+            }),
+        })
+    )
+}
 
 export default connect()(ClassForGroup);

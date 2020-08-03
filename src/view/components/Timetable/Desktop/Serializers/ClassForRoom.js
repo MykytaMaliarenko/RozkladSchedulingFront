@@ -11,7 +11,8 @@ import ClassNameSection from "./sections/ClassNameSection";
 
 class ClassForRoom extends React.Component {
     render() {
-        const {name, teacher, groups} = this.props;
+        const {classes} = this.props;
+        const {name, teacher, groups} = classes && classes.length === 1 ? classes[0] : {};
 
         let teacherSection;
         if (teacher) {
@@ -29,6 +30,18 @@ class ClassForRoom extends React.Component {
             )
         }
 
+        let nameSection;
+        if (name)
+            nameSection = (
+                <ClassNameSection name={name} />
+            )
+
+        let groupsSection;
+        if (groups)
+            groupsSection = (
+                <GroupsSection groups={groups}/>
+            )
+
         return (
             <Grid
                 container
@@ -37,7 +50,7 @@ class ClassForRoom extends React.Component {
                 alignItems="flex-start"
             >
                 <Grid item xs>
-                    <ClassNameSection name={name} />
+                    {nameSection}
                 </Grid>
 
                 <Grid item xs>
@@ -45,30 +58,30 @@ class ClassForRoom extends React.Component {
                 </Grid>
 
                 <Grid item xs>
-                    <GroupsSection
-                        groups={groups}
-                    />
+                    {groupsSection}
                 </Grid>
             </Grid>
         )
     }
 }
 
-ClassForRoom.propTypes = {
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string,
+ClassForRoom.propTypes = PropTypes.arrayOf(
+    PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        type: PropTypes.string,
 
-    teacher: PropTypes.shape({
-        officialName: PropTypes.string.isRequired,
-    }),
+        teacher: PropTypes.shape({
+            officialName: PropTypes.string.isRequired,
+        }),
 
-    groups: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            name: PropTypes.string.isRequired,
-        })
-    ),
-};
+        groups: PropTypes.arrayOf(
+            PropTypes.shape({
+                id: PropTypes.number.isRequired,
+                name: PropTypes.string.isRequired,
+            })
+        ),
+    })
+);
 
 export default connect()(ClassForRoom);

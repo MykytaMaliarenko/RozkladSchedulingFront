@@ -4,7 +4,7 @@ const homeRoutes = {
 
 const schedulePreviewRoutes = {
     schedulePreviewByGroup: "/schedule/group/:group",
-    schedulePreviewByUniversityBuilding: "/schedule/building/:buildingName",
+    schedulePreviewByBuilding: "/schedule/building/:building",
     schedulePreviewByTeacher: "/schedule/teacher/:teacher",
     schedulePreviewByRoom: "/schedule/room/:room",
 }

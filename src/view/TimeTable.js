@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import actions from "../../../store/actions"
-import DesktopTimeTable from "./Desktop/index";
-import {filters} from "../../../store/actions/classes";
+import actions from "../store/actions"
+import DesktopTimeTable from "./components/timetable/Desktop/index";
+import {filters} from "../store/actions/classes";
 
 const mapStateToProps = state => {
     return {

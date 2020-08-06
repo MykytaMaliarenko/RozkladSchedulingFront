@@ -11,8 +11,7 @@ import ClassNameSection from "./sections/ClassNameSection";
 
 class ClassForRoom extends React.Component {
     render() {
-        const {classes} = this.props;
-        const {name, teacher, groups} = classes && classes.length === 1 ? classes[0] : {};
+        const {name, teacher, groups} = this.props;
 
         let teacherSection;
         if (teacher) {
@@ -21,7 +20,7 @@ class ClassForRoom extends React.Component {
                 <Link
                     component="button"
                     onClick={() => this.props.dispatch(push(teacherUrl))}
-                    style={{'text-align': 'left'}}
+                    style={{'textAlign': 'left'}}
                 >
                     <Typography variant="caption" align="left">
                         {teacher.officialName}
@@ -65,23 +64,21 @@ class ClassForRoom extends React.Component {
     }
 }
 
-ClassForRoom.propTypes = PropTypes.arrayOf(
-    PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string,
+ClassForRoom.propTypes = {
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string,
 
-        teacher: PropTypes.shape({
-            officialName: PropTypes.string.isRequired,
-        }),
+    teacher: PropTypes.shape({
+        officialName: PropTypes.string.isRequired,
+    }),
 
-        groups: PropTypes.arrayOf(
-            PropTypes.shape({
-                id: PropTypes.number.isRequired,
-                name: PropTypes.string.isRequired,
-            })
-        ),
-    })
-);
+    groups: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+        })
+    ),
+}
 
 export default connect()(ClassForRoom);

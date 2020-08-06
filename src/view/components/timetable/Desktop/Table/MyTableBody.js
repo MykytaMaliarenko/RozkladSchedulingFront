@@ -32,7 +32,7 @@ const MyTableBody = (props) => {
                                     return (
                                         <TableCell component="th" scope="row" key={dayOfWeek}>
                                             <ClassSerializer
-                                                classes={classes[dayOfWeek][timeSlotId-1]}
+                                                {...classes[dayOfWeek][timeSlotId-1]}
                                             />
                                         </TableCell>
                                     )

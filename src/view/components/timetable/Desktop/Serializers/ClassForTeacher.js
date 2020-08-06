@@ -11,8 +11,7 @@ import ClassNameSection from "./sections/ClassNameSection";
 
 class ClassForTeacher extends React.Component {
     render() {
-        const {classes} = this.props;
-        const {name, type, room, groups} = classes && classes.length === 1 ? classes[0] : {};
+        const {name, type, room, groups} = this.props;
 
         let roomSection;
         if (room) {
@@ -69,23 +68,21 @@ class ClassForTeacher extends React.Component {
     }
 }
 
-ClassForTeacher.propTypes = PropTypes.arrayOf(
-    PropTypes.shape({
+ClassForTeacher.propTypes = {
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string,
+
+    room: PropTypes.shape({
         name: PropTypes.string.isRequired,
-        type: PropTypes.string,
+        universityBuilding: PropTypes.number.isRequired,
+    }),
 
-        room: PropTypes.shape({
+    groups: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number.isRequired,
             name: PropTypes.string.isRequired,
-            universityBuilding: PropTypes.number.isRequired,
-        }),
-
-        groups: PropTypes.arrayOf(
-            PropTypes.shape({
-                id: PropTypes.number.isRequired,
-                name: PropTypes.string.isRequired,
-            })
-        ),
-    })
-);
+        })
+    ),
+}
 
 export default ClassForTeacher;

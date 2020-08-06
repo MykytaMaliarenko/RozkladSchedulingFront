@@ -42,7 +42,7 @@ class DesktopTimeTable extends React.Component {
             return [1, 2, 3, 4, 5, 6].map(currentDayOfWeek => {
                 let classesByDayOfWeek = classesByWeek.filter(v => v.dayOfWeek === currentDayOfWeek);
                 return [1, 2, 3, 4, 5].map(currentTimeSlotId =>
-                    classesByDayOfWeek.filter(v => v.timeSlot === currentTimeSlotId)
+                    classesByDayOfWeek.find(v => v.timeSlot === currentTimeSlotId)
                 );
             })
         });

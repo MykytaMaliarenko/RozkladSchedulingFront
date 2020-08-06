@@ -11,8 +11,7 @@ import ClassNameSection from "./sections/ClassNameSection";
 
 class ClassForGroup extends React.Component {
     render() {
-        const {classes} = this.props;
-        const {name, type, teacher, room} = classes && classes.length === 1 ? classes[0] : {};
+        const {name, type, teacher, room} = this.props;
 
         let teacherSection;
         if (teacher) {
@@ -79,21 +78,17 @@ class ClassForGroup extends React.Component {
 }
 
 ClassForGroup.propTypes = {
-    classes: PropTypes.arrayOf(
-        PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            type: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string,
 
-            teacher: PropTypes.shape({
-                officialName: PropTypes.string.isRequired,
-            }),
+    teacher: PropTypes.shape({
+        officialName: PropTypes.string.isRequired,
+    }),
 
-            room: PropTypes.shape({
-                name: PropTypes.string.isRequired,
-                universityBuilding: PropTypes.number.isRequired,
-            }),
-        })
-    )
+    room: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        universityBuilding: PropTypes.number.isRequired,
+    }),
 }
 
 export default connect()(ClassForGroup);

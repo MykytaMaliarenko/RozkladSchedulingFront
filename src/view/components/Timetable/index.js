@@ -32,8 +32,7 @@ class TimeTable extends React.Component {
         super (props);
 
         this.state = {
-            currentFilter: null,
-            payload: null,
+            getClassesData: null,
         };
 
         this.loadData = this.loadData.bind(this);
@@ -49,25 +48,27 @@ class TimeTable extends React.Component {
     }
 
     loadData() {
-        const { group, room, teacher } = this.props.match.params;
+        const { group, room, teacher, building } = this.props.match.params;
 
         if (group) {
             this.props.dispatch(actions.classes.fetchClassesByGroupIfNeeded(group));
             this.setState({
-                currentFilter: filters.BY_GROUP,
-                payload: group,
+                getClassesData: () => this.props.classes.data[filters.BY_GROUP][group],
             });
         } else if (room) {
             this.props.dispatch(actions.classes.fetchClassesByRoomIfNeeded(room));
             this.setState({
-                currentFilter: filters.BY_ROOM,
-                payload: room,
+                getClassesData: () => this.props.classes.data[filters.BY_ROOM][room],
             });
         } else if (teacher) {
             this.props.dispatch(actions.classes.fetchClassesByTeacherIfNeeded(teacher));
             this.setState({
-                currentFilter: filters.BY_TEACHER,
-                payload: teacher,
+                getClassesData: () => this.props.classes.data[filters.BY_TEACHER][teacher],
+            });
+        } else if (building) {
+            this.props.dispatch(actions.rooms.fetchFreeRoomsInBuildingIfNeeded(building));
+            this.setState({
+                getClassesData: () => this.props.rooms.freeRoomsByBuilding[building],
             });
         }
 
@@ -77,7 +78,7 @@ class TimeTable extends React.Component {
     render() {
         let currentState;
 
-        if (this.props.isFetching || !this.state.currentFilter)
+        if (this.props.isFetching || !this.state.getClassesData)
             currentState = (
                 <CircularProgress size="4rem" />
             )
@@ -86,12 +87,11 @@ class TimeTable extends React.Component {
                 <h1>Error =(</h1>
             )
         else {
-            let classesData = this.props.classes.data[this.state.currentFilter][this.state.payload];
+            let classesData = this.state.getClassesData();
             currentState = (
                 <DesktopTimeTable
                     universityClasses={classesData}
                     timeSlots={this.props.timeSlots.data}
-                    filter={this.state.currentFilter}
                 />
             )
         }

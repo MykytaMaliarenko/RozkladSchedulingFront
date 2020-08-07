@@ -1,37 +1,19 @@
 import React from 'react';
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
-import routes from "../../../../../routes";
-import {push} from "connected-react-router";
-import Link from "@material-ui/core/Link";
-import Box from "@material-ui/core/Box";
 import GroupsSection from "./sections/GroupsSection";
 import ClassNameSection from "./sections/ClassNameSection";
+import RoomSection from "./sections/RoomSection";
 
 class ClassForTeacher extends React.Component {
     render() {
         const {name, type, room, groups} = this.props;
 
         let roomSection;
-        if (room) {
-            let roomUrl = routes.schedulePreviewByRoom.replace(':room', room.id)
+        if (room)
             roomSection = (
-                <Box>
-                    <Link
-                        variant="caption"
-                        component="button"
-                        onClick={() => this.props.dispatch(push(roomUrl))}
-                    >
-                        {room.name}
-                    </Link>
-
-                    <Typography variant="caption">
-                        -{room.universityBuilding} {type}
-                    </Typography>
-                </Box>
+                <RoomSection room={room} />
             )
-        }
 
         let nameSection;
         if (name)
@@ -58,6 +40,7 @@ class ClassForTeacher extends React.Component {
 
                 <Grid item xs>
                     {roomSection}
+                    {type}
                 </Grid>
 
                 <Grid item xs>

@@ -1,13 +1,12 @@
 import React from 'react';
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import Link from "@material-ui/core/Link";
 import {push} from "connected-react-router";
 import routes from "../../../../../routes";
 import {connect} from "react-redux";
-import Box from "@material-ui/core/Box";
 import ClassNameSection from "./sections/ClassNameSection";
+import RoomSection from "./sections/RoomSection";
 
 class ClassForGroup extends React.Component {
     render() {
@@ -29,24 +28,10 @@ class ClassForGroup extends React.Component {
         }
 
         let roomSection;
-        if (room) {
-            let roomUrl = routes.schedulePreviewByRoom.replace(':room', room.id)
+        if (room)
             roomSection = (
-                <Box>
-                    <Link
-                        variant="caption"
-                        component="button"
-                        onClick={() => this.props.dispatch(push(roomUrl))}
-                    >
-                        {room.name}
-                    </Link>
-
-                    <Typography variant="caption">
-                        -{room.universityBuilding} {type}
-                    </Typography>
-                </Box>
+                <RoomSection room={room} />
             )
-        }
 
         let nameSection;
         if (name)
@@ -71,6 +56,7 @@ class ClassForGroup extends React.Component {
 
                 <Grid item xs>
                     {roomSection}
+                    {type}
                 </Grid>
             </Grid>
         )

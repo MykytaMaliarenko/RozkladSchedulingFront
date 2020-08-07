@@ -9,8 +9,13 @@ import {filters} from "../store/actions/classes";
 
 const mapStateToProps = state => {
     return {
-        hasError: state.timeSlots.hasError || state.classes.hasError,
-        isFetching: state.timeSlots.isFetching || state.classes.isFetching,
+        hasError: state.timeSlots.hasError ||
+            state.classes.hasError ||
+            state.rooms.freeRoomsByBuilding.hasError,
+
+        isFetching: state.timeSlots.isFetching ||
+            state.classes.isFetching ||
+            state.rooms.freeRoomsByBuilding.isFetching,
 
         timeSlots: {
             isFetching: state.timeSlots.isFetching,
@@ -23,6 +28,12 @@ const mapStateToProps = state => {
             hasError: state.classes.hasError,
             data: state.classes.data,
         },
+
+        rooms: {
+            isFetching: state.rooms.freeRoomsByBuilding.isFetching,
+            hasError: state.rooms.freeRoomsByBuilding.hasError,
+            data: state.rooms.freeRoomsByBuilding.data,
+        }
     }
 };
 
@@ -68,7 +79,7 @@ class TimeTable extends React.Component {
         } else if (building) {
             this.props.dispatch(actions.rooms.fetchFreeRoomsInBuildingIfNeeded(building));
             this.setState({
-                getClassesData: () => this.props.rooms.freeRoomsByBuilding[building],
+                getClassesData: () => this.props.rooms.data[building],
             });
         }
 

@@ -9,7 +9,7 @@ import {push} from "connected-react-router";
 
 class RoomSection extends React.Component {
     render() {
-        const {room} = this.props;
+        const {room, type} = this.props;
 
         let roomUrl = routes.schedulePreviewByRoom.replace(':room', room.id);
         let buildingUrl = routes.schedulePreviewByBuilding.replace(':building', room.universityBuilding)
@@ -34,6 +34,13 @@ class RoomSection extends React.Component {
                 >
                     {room.universityBuilding}
                 </Link>
+
+                <Typography
+                    style={{'paddingLeft': '5px'}}
+                    variant="caption"
+                >
+                    {type}
+                </Typography>
             </Box>
         )
     }
@@ -44,7 +51,9 @@ RoomSection.propTypes = {
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
         universityBuilding: PropTypes.number.isRequired,
-    })
+    }),
+
+    type: PropTypes.string,
 };
 
 export default connect()(RoomSection);

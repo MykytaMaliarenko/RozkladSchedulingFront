@@ -12,7 +12,7 @@ class ClassForTeacher extends React.Component {
         let roomSection;
         if (room)
             roomSection = (
-                <RoomSection room={room} />
+                <RoomSection room={room} type={type} />
             )
 
         let nameSection;
@@ -40,7 +40,6 @@ class ClassForTeacher extends React.Component {
 
                 <Grid item xs>
                     {roomSection}
-                    {type}
                 </Grid>
 
                 <Grid item xs>

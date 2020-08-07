@@ -5,6 +5,9 @@ import {
     FETCH_ALL_BUILDINGS_BEGIN,
     FETCH_ALL_BUILDINGS_FAILURE,
     FETCH_ALL_BUILDINGS_SUCCESS,
+    FETCH_FREE_ROOMS_BEGIN,
+    FETCH_FREE_ROOMS_SUCCESS,
+    FETCH_FREE_ROOMS_FAILURE
 } from "../actions/rooms";
 
 const defaultState = {
@@ -21,7 +24,14 @@ const defaultState = {
 
         building: null,
         data: [],
-    }
+    },
+
+    freeRoomsByBuilding: {
+        isFetching: false,
+        hasError: false,
+
+        data: {},
+    },
 };
 
 export default (state = defaultState, action) => {
@@ -89,6 +99,40 @@ export default (state = defaultState, action) => {
 
                     isFetching: false,
                     hasError: true,
+                }
+            }
+
+        case FETCH_FREE_ROOMS_BEGIN:
+            return {
+                ...state,
+                freeRoomsByBuilding: {
+                    ...state.freeRoomsByBuilding,
+                    isFetching: true,
+                    hasError: false,
+                }
+            }
+
+        case FETCH_FREE_ROOMS_SUCCESS:
+            return {
+                ...state,
+                freeRoomsByBuilding: {
+                    ...state.freeRoomsByBuilding,
+                    isFetching: false,
+
+                    data: {
+                        ...state.freeRoomsByBuilding.data,
+                        [action.building]: action.data
+                    }
+                }
+            }
+
+        case FETCH_FREE_ROOMS_FAILURE:
+            return {
+                ...state,
+                freeRoomsByBuilding: {
+                    ...state.freeRoomsByBuilding,
+                    isFetching: false,
+                    hasError: true
                 }
             }
 

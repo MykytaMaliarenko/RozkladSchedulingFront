@@ -27,7 +27,6 @@ class ByRoom extends React.Component {
             isSearchBuildingOpen: false,
 
             selectedBuilding: null,
-            buildings: props.buildings.data,
         };
 
         this.openRoom = this.openRoom.bind(this);

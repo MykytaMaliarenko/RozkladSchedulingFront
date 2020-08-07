@@ -6,7 +6,7 @@ import {
 import routes  from '../routes.js';
 import NavBar from "./components/NavBar";
 import Home from "./Home";
-import TimeTable from "./components/Timetable";
+import TimeTable from "./TimeTable";
 import Grid from "@material-ui/core/Grid";
 
 const App = () => {
@@ -28,7 +28,12 @@ const App = () => {
                             <Home />
                         </Route>
 
-                        <Route exact path={[routes.schedulePreviewByGroup, routes.schedulePreviewByRoom]}>
+                        <Route exact path={[
+                            routes.schedulePreviewByGroup,
+                            routes.schedulePreviewByRoom,
+                            routes.schedulePreviewByTeacher,
+                            routes.schedulePreviewByBuilding,
+                        ]}>
                             <TimeTable />
                         </Route>
                     </Switch>

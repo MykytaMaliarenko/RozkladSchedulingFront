@@ -3,14 +3,19 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import actions from "../../../store/actions"
-import DesktopTimeTable from "./Desktop/index";
-import {filters} from "../../../store/actions/classes";
+import actions from "../store/actions"
+import DesktopTimeTable from "./components/timetable/Desktop/index";
+import {filters} from "../store/actions/classes";
 
 const mapStateToProps = state => {
     return {
-        hasError: state.timeSlots.hasError || state.classes.hasError,
-        isFetching: state.timeSlots.isFetching || state.classes.isFetching,
+        hasError: state.timeSlots.hasError ||
+            state.classes.hasError ||
+            state.rooms.freeRoomsByBuilding.hasError,
+
+        isFetching: state.timeSlots.isFetching ||
+            state.classes.isFetching ||
+            state.rooms.freeRoomsByBuilding.isFetching,
 
         timeSlots: {
             isFetching: state.timeSlots.isFetching,
@@ -23,6 +28,12 @@ const mapStateToProps = state => {
             hasError: state.classes.hasError,
             data: state.classes.data,
         },
+
+        rooms: {
+            isFetching: state.rooms.freeRoomsByBuilding.isFetching,
+            hasError: state.rooms.freeRoomsByBuilding.hasError,
+            data: state.rooms.freeRoomsByBuilding.data,
+        }
     }
 };
 
@@ -32,8 +43,7 @@ class TimeTable extends React.Component {
         super (props);
 
         this.state = {
-            currentFilter: null,
-            payload: null,
+            getClassesData: null,
         };
 
         this.loadData = this.loadData.bind(this);
@@ -49,19 +59,27 @@ class TimeTable extends React.Component {
     }
 
     loadData() {
-        const { group, room } = this.props.match.params;
+        const { group, room, teacher, building } = this.props.match.params;
 
         if (group) {
             this.props.dispatch(actions.classes.fetchClassesByGroupIfNeeded(group));
             this.setState({
-                currentFilter: filters.BY_GROUP,
-                payload: group,
+                getClassesData: () => this.props.classes.data[filters.BY_GROUP][group],
             });
         } else if (room) {
             this.props.dispatch(actions.classes.fetchClassesByRoomIfNeeded(room));
             this.setState({
-                currentFilter: filters.BY_ROOM,
-                payload: room,
+                getClassesData: () => this.props.classes.data[filters.BY_ROOM][room],
+            });
+        } else if (teacher) {
+            this.props.dispatch(actions.classes.fetchClassesByTeacherIfNeeded(teacher));
+            this.setState({
+                getClassesData: () => this.props.classes.data[filters.BY_TEACHER][teacher],
+            });
+        } else if (building) {
+            this.props.dispatch(actions.rooms.fetchFreeRoomsInBuildingIfNeeded(building));
+            this.setState({
+                getClassesData: () => this.props.rooms.data[building],
             });
         }
 
@@ -71,7 +89,7 @@ class TimeTable extends React.Component {
     render() {
         let currentState;
 
-        if (this.props.isFetching || !this.state.currentFilter)
+        if (this.props.isFetching || !this.state.getClassesData)
             currentState = (
                 <CircularProgress size="4rem" />
             )
@@ -80,12 +98,11 @@ class TimeTable extends React.Component {
                 <h1>Error =(</h1>
             )
         else {
-            let classesData = this.props.classes.data[this.state.currentFilter][this.state.payload];
+            let classesData = this.state.getClassesData();
             currentState = (
                 <DesktopTimeTable
                     universityClasses={classesData}
                     timeSlots={this.props.timeSlots.data}
-                    filter={this.state.currentFilter}
                 />
             )
         }

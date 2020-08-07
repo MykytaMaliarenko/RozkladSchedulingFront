@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import { push } from 'connected-react-router'
-import {searchGroup, searchStop} from "../../../../store/actions/groups";
+import {searchGroup, searchGroupStop} from "../../../../store/actions/groups";
 import routes from "../../../../routes";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
@@ -32,7 +32,7 @@ class ByGroup extends React.Component {
     };
 
     componentWillUnmount() {
-        this.props.dispatch(searchStop());
+        this.props.dispatch(searchGroupStop());
     }
 
     onSearch(e, value) {

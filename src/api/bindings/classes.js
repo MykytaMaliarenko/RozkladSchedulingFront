@@ -7,7 +7,10 @@ const Classes = {
         requests.get(`${ApiPrefix}/group/${group}`),
     
     getByRoom: room =>
-        requests.get(`${ApiPrefix}/room/${room}`)
+        requests.get(`${ApiPrefix}/room/${room}`),
+
+    getByTeacher: teacher =>
+        requests.get(`${ApiPrefix}/teacher/${teacher}`),
 };
 
 export default Classes;

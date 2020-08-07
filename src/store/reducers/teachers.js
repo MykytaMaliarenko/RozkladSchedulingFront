@@ -1,9 +1,9 @@
 import {
-    SEARCH_GROUP_BEGIN,
-    SEARCH_GROUP_FAILURE,
-    SEARCH_GROUP_SUCCESS,
-    SEARCH_GROUP_UNLOAD
-} from "../actions/groups"
+    SEARCH_TEACHER_BEGIN,
+    SEARCH_TEACHER_FAILURE,
+    SEARCH_TEACHER_SUCCESS,
+    SEARCH_TEACHER_UNLOAD
+} from "../actions/teachers"
 
 const defaultState = {
     isFetching: false,
@@ -18,7 +18,7 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
     switch (action.type) {
-        case SEARCH_GROUP_BEGIN:
+        case SEARCH_TEACHER_BEGIN:
             return {
                 ...state,
                 isFetching: true,
@@ -30,7 +30,7 @@ export default (state = defaultState, action) => {
                 }
             }
 
-        case SEARCH_GROUP_SUCCESS:
+        case SEARCH_TEACHER_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
@@ -40,7 +40,7 @@ export default (state = defaultState, action) => {
                 }
             }
 
-        case SEARCH_GROUP_FAILURE:
+        case SEARCH_TEACHER_FAILURE:
             return {
                 ...state,
                 isFetching: false,
@@ -51,7 +51,7 @@ export default (state = defaultState, action) => {
                 }
             }
 
-        case SEARCH_GROUP_UNLOAD:
+        case SEARCH_TEACHER_UNLOAD:
             return defaultState;
 
         default:

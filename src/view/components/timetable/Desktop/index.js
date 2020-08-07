@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {withRouter} from "react-router-dom";
+import routes from "../../../../routes";
+import Serializers from "./Serializers";
 import Week from "./Week";
 import {withStyles} from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
@@ -15,9 +18,11 @@ class DesktopTimeTable extends React.Component {
         super (props);
 
         this.sortData = this.sortData.bind(this);
+        this.getCurrentSerializer = this.getCurrentSerializer.bind(this);
 
         this.state = {
             sortedClasses: this.sortData(),
+            currentClassSerializer: this.getCurrentSerializer()
         };
     }
 
@@ -26,6 +31,7 @@ class DesktopTimeTable extends React.Component {
             prevProps.filter !== this.props.filter)
             this.setState({
                 sortedClasses: this.sortData(),
+                currentClassSerializer: this.getCurrentSerializer()
             })
     }
 
@@ -42,6 +48,34 @@ class DesktopTimeTable extends React.Component {
         });
     }
 
+    getCurrentSerializer() {
+        let {match} = this.props;
+
+        let currentClassSerializer;
+        switch (match.path ) {
+            case routes.schedulePreviewByGroup:
+                currentClassSerializer = Serializers.ClassForGroup;
+                break;
+
+            case routes.schedulePreviewByRoom:
+                currentClassSerializer = Serializers.ClassForRoom;
+                break;
+
+            case routes.schedulePreviewByTeacher:
+                currentClassSerializer = Serializers.ClassForTeacher;
+                break;
+
+            case routes.schedulePreviewByBuilding:
+                currentClassSerializer = Serializers.ClassForBuilding;
+                break;
+
+            default:
+                currentClassSerializer = Serializers.ClassForGroup;
+        }
+
+        return currentClassSerializer;
+    }
+
     render() {
         const { classes } = this.props;
         
@@ -51,8 +85,8 @@ class DesktopTimeTable extends React.Component {
                     <Week
                         title="1 неделя"
                         classes={this.state.sortedClasses[0]}
+                        classSerializer={this.state.currentClassSerializer}
                         timeSlots={this.props.timeSlots}
-                        filter={this.props.filter}
                     />
                 </Box>
 
@@ -60,8 +94,8 @@ class DesktopTimeTable extends React.Component {
                     <Week
                         title="2 неделя"
                         classes={this.state.sortedClasses[1]}
+                        classSerializer={this.state.currentClassSerializer}
                         timeSlots={this.props.timeSlots}
-                        filter={this.props.filter}
                     />
                 </Box>
             </Box>
@@ -73,7 +107,8 @@ class DesktopTimeTable extends React.Component {
 DesktopTimeTable.propTypes = {
     universityClasses: PropTypes.array.isRequired,
     timeSlots: PropTypes.array.isRequired,
-    filter: PropTypes.string.isRequired,
 }
 
-export default withStyles(styles, { withTheme: true })(DesktopTimeTable);
+export default withRouter(
+    withStyles(styles, { withTheme: true })(DesktopTimeTable)
+);

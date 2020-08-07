@@ -83,7 +83,7 @@ class ByTeacher extends React.Component {
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                style={{width: 250}}
+                                style={{width: 200}}
                                 label="Имя Преподавателя"
                                 placeholder="Чертов"
                                 onChange={this.getSearchOptions}

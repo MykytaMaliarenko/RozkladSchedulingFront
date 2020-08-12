@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import TimeLine from "../TimeLine";
+import TimeLine from "../../TimeLine";
 
 const MyTableBody = (props) => {
     const {showTimeLine,

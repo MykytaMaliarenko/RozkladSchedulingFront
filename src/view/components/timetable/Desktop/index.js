@@ -106,7 +106,6 @@ class DesktopTimeTable extends React.Component {
 
 DesktopTimeTable.propTypes = {
     universityClasses: PropTypes.array.isRequired,
-    timeSlots: PropTypes.array.isRequired,
 }
 
 export default withRouter(

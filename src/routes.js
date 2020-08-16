@@ -9,9 +9,14 @@ const schedulePreviewRoutes = {
     schedulePreviewByRoom: "/schedule/room/:room",
 }
 
+const classPreviewRoutes = {
+    classPreview: "/class/:id",
+}
+
 const routes = {
     ...homeRoutes,
     ...schedulePreviewRoutes,
+    ...classPreviewRoutes
 };
 
 export default routes;

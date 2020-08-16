@@ -3,9 +3,15 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {
+    BrowserView,
+    MobileView,
+} from "react-device-detect";
 import actions from "../store/actions"
 import DesktopTimeTable from "./components/timetable/Desktop/index";
+import MobileTimeTable from "./components/timetable/Mobile/index";
 import {filters} from "../store/actions/classes";
+import Box from "@material-ui/core/Box";
 
 const mapStateToProps = state => {
     return {
@@ -87,29 +93,38 @@ class TimeTable extends React.Component {
     }
 
     render() {
-        let currentState;
+        let currentRenderState;
 
         if (this.props.isFetching || !this.state.getClassesData)
-            currentState = (
+            currentRenderState = (
                 <CircularProgress size="4rem" />
             )
         else if (this.props.hasError)
-            currentState = (
+            currentRenderState = (
                 <h1>Error =(</h1>
             )
         else {
             let classesData = this.state.getClassesData();
-            currentState = (
-                <DesktopTimeTable
-                    universityClasses={classesData}
-                    timeSlots={this.props.timeSlots.data}
-                />
+            currentRenderState = (
+                <Box>
+                    <BrowserView>
+                        <DesktopTimeTable
+                            universityClasses={classesData}
+                        />
+                    </BrowserView>
+
+                    <MobileView>
+                        <MobileTimeTable
+                            universityClasses={classesData}
+                        />
+                    </MobileView>
+                </Box>
             )
         }
 
         return (
             <Container maxWidth="lg" disableGutters>
-                {currentState}
+                {currentRenderState}
             </Container>
         )
     }

@@ -1,27 +1,31 @@
 import React from 'react';
-import TextField from "@material-ui/core/TextField";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import {fetchAllBuildingsIfNeeded} from "../../../../store/actions/rooms";
 import {connect} from "react-redux";
 import {push} from "connected-react-router";
 import routes from "../../../../routes";
 import Grid from "@material-ui/core/Grid";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import {withStyles} from "@material-ui/core/styles";
 
 
 const mapStateToProps = state => {
     return {
-        buildings: state.rooms.buildings,
+        buildings: state.rooms.buildings.data,
     }
 };
+
+const styles = () => ({
+    menuPaper: {
+        maxHeight: 250
+    }
+});
 
 class ByBuilding extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            isSearchOpen: false,
-        };
 
         this.selectBuilding = this.selectBuilding.bind(this);
     }
@@ -30,13 +34,22 @@ class ByBuilding extends React.Component {
         this.props.dispatch(fetchAllBuildingsIfNeeded());
     }
 
-    selectBuilding(building) {
+    selectBuilding(event) {
         this.props.dispatch(
-            push(routes.schedulePreviewByBuilding.replace(':building', building))
+            push(routes.schedulePreviewByBuilding.replace(':building', event.target.value))
         );
     }
 
     render() {
+        let {buildings, classes} = this.props;
+
+        let menuItems = null;
+        if (Array.isArray(buildings))
+            menuItems = buildings.map(building => (
+                <MenuItem value={building}>{building}</MenuItem>
+            ))
+
+
         return (
             <Grid
                 container
@@ -45,48 +58,25 @@ class ByBuilding extends React.Component {
                 spacing={5}
             >
                 <Grid item>
-                    <Autocomplete
-                        open={this.state.isSearchOpen}
-                        options={this.props.buildings.data}
-                        loading={this.props.buildings.isFetching}
-                        openText={"опции"}
-                        loadingText={"поиск..."}
-                        noOptionsText={"не найдено"}
-                        onChange={(e, value) => this.selectBuilding(value)}
-                        onOpen={() => {
-                            this.setState({
-                                isSearchOpen: true
-                            });
-                        }}
-                        onClose={() => {
-                            this.setState({
-                                isSearchOpen: false
-                            });
-                        }}
-                        getOptionSelected={(option, value) => option == value}
-                        getOptionLabel={(option) => option.toString()}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                style={{width: 100}}
-                                label="Здание"
-                                placeholder="16"
-                                InputProps={{
-                                    ...params.InputProps,
-                                    endAdornment: (
-                                        <React.Fragment>
-                                            {this.props.isFetching ? <CircularProgress color="inherit" size={20} /> : null}
-                                            {params.InputProps.endAdornment}
-                                        </React.Fragment>
-                                    ),
-                                }}
-                            />
-                        )}
-                    />
+                    <FormControl>
+                        <InputLabel id="search-by-building-label">Здание</InputLabel>
+                        <Select
+                            style={{width: 100}}
+                            labelId="search-by-building-label"
+                            id="search-by-building-select"
+                            onChange={this.selectBuilding}
+                            MenuProps={{ classes: { paper: classes.menuPaper }  }}
+                        >
+                            {menuItems}
+                        </Select>
+                    </FormControl>
                 </Grid>
+
             </Grid>
         )
     }
 }
 
-export default connect(mapStateToProps)(ByBuilding)
+export default connect(mapStateToProps)(
+    withStyles(styles, { withTheme: true })(ByBuilding)
+)

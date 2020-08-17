@@ -1,5 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SimpleDialog from "../SimpleDialog";
+import {
+    isMobile,
+    MobileView,
+    BrowserView
+} from "react-device-detect";
 import Typography from "@material-ui/core/Typography"
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
@@ -12,6 +18,8 @@ export default class SearchOptionPicker extends React.Component {
 
         this.state = {
             anchorEl: null,
+            isDialogOpen: false,
+
             selectedOptionIndex: 0,
         };
 
@@ -20,19 +28,34 @@ export default class SearchOptionPicker extends React.Component {
     }
 
     handleClick(event) {
-        let target = event.currentTarget;
-        this.setState(() => ({
-            anchorEl: target,
-        }));
+        if (isMobile) {
+            this.setState(() => ({
+                isDialogOpen: true,
+            }));
+        } else {
+            let target = event.currentTarget;
+            this.setState(() => ({
+                anchorEl: target,
+            }));
+        }
     }
 
-    handleClose(index) {
-        this.setState(() => ({
-            anchorEl: null,
-        }));
+    handleClose(value) {
+        let index;
+        if (isMobile) {
+            index = this.props.searchOptions.findIndex(option => option === value);
+            this.setState(() => ({
+                isDialogOpen: false,
+            }));
+        } else {
+            index = value;
 
-        if (index === 0 || index)
-        {
+            this.setState(() => ({
+                anchorEl: null,
+            }));
+        }
+
+        if (index === 0 || index) {
             this.setState(() => ({
                 selectedOptionIndex: index,
             }));
@@ -59,26 +82,40 @@ export default class SearchOptionPicker extends React.Component {
                         {this.props.searchOptions[this.state.selectedOptionIndex]}
                     </Button>
 
-                    <Menu
-                        id="simple-menu"
-                        anchorEl={this.state.anchorEl}
-                        getContentAnchorEl={null}
-                        disablePortal={true}
-                        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                        transformOrigin={{ vertical: "top", horizontal: "center" }}
-                        open={Boolean(this.state.anchorEl)}
-                        onClose={() => this.handleClose(null)}
-                    >
-                        {this.props.searchOptions.map((option, index) => (
-                            <MenuItem
-                                key={option}
-                                selected={index === this.state.selectedOptionIndex}
-                                onClick={() => this.handleClose(index)}
-                            >
-                                {option}
-                            </MenuItem>
-                        ))}
-                    </Menu>
+                    <MobileView>
+                        <SimpleDialog
+                            title={'Поиск по:'}
+                            values={this.props.searchOptions}
+                            open={this.state.isDialogOpen}
+                            onSelected={this.handleClose}
+                            onClose={() => this.setState({
+                                isDialogOpen: false,
+                            })}
+                        />
+                    </MobileView>
+
+                    <BrowserView>
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={this.state.anchorEl}
+                            getContentAnchorEl={null}
+                            disablePortal={true}
+                            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                            transformOrigin={{ vertical: "top", horizontal: "center" }}
+                            open={Boolean(this.state.anchorEl)}
+                            onClose={() => this.handleClose(null)}
+                        >
+                            {this.props.searchOptions.map((option, index) => (
+                                <MenuItem
+                                    key={option}
+                                    selected={index === this.state.selectedOptionIndex}
+                                    onClick={() => this.handleClose(index)}
+                                >
+                                    {option}
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </BrowserView>
                 </Grid>
             </Grid>
         )

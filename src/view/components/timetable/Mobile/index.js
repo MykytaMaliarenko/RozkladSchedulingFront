@@ -4,31 +4,39 @@ import {withRouter} from "react-router-dom";
 import routes from "../../../../routes";
 import Serializers from "./Serializers";
 import Week from "./Week";
-import {withStyles} from "@material-ui/core/styles";
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import Box from "@material-ui/core/Box";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import {MuiThemeProvider} from "@material-ui/core";
+import {createMuiTheme} from "@material-ui/core/styles";
 
-const styles = theme => ({
-    week: {
-        marginBottom: theme.spacing(2.5),
-    },
+const theme = createMuiTheme({
+    palette: {
+        background: {
+            default: "#EEEEEE"
+        }
+    }
 });
 
-class DesktopTimeTable extends React.Component {
+class MobileTimeTable extends React.Component {
     constructor(props) {
         super (props);
 
         this.sortData = this.sortData.bind(this);
         this.getCurrentSerializer = this.getCurrentSerializer.bind(this);
+        this.tabValueChange = this.tabValueChange.bind(this);
 
         this.state = {
             sortedClasses: this.sortData(),
-            currentClassSerializer: this.getCurrentSerializer()
+            currentClassSerializer: this.getCurrentSerializer(),
+
+            tabValue: 0,
         };
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.universityClasses !== this.props.universityClasses ||
-            prevProps.filter !== this.props.filter)
+        if (prevProps.universityClasses !== this.props.universityClasses)
             this.setState({
                 sortedClasses: this.sortData(),
                 currentClassSerializer: this.getCurrentSerializer()
@@ -57,12 +65,12 @@ class DesktopTimeTable extends React.Component {
                 currentClassSerializer = Serializers.ClassForGroup;
                 break;
 
-            case routes.schedulePreviewByRoom:
-                currentClassSerializer = Serializers.ClassForRoom;
-                break;
-
             case routes.schedulePreviewByTeacher:
                 currentClassSerializer = Serializers.ClassForTeacher;
+                break;
+
+            case routes.schedulePreviewByRoom:
+                currentClassSerializer = Serializers.ClassForRoom;
                 break;
 
             case routes.schedulePreviewByBuilding:
@@ -76,38 +84,45 @@ class DesktopTimeTable extends React.Component {
         return currentClassSerializer;
     }
 
-    render() {
-        const { classes } = this.props;
-        
-        return (
-            <Box>
-                <Box className={classes.week}>
-                    <Week
-                        title="1 неделя"
-                        classes={this.state.sortedClasses[0]}
-                        classSerializer={this.state.currentClassSerializer}
-                        timeSlots={this.props.timeSlots}
-                    />
-                </Box>
+    tabValueChange(event, newValue) {
+        this.setState({
+            tabValue: newValue
+        })
+    }
 
-                <Box className={classes.week}>
-                    <Week
-                        title="2 неделя"
-                        classes={this.state.sortedClasses[1]}
-                        classSerializer={this.state.currentClassSerializer}
-                        timeSlots={this.props.timeSlots}
-                    />
+    render() {
+        let weekToRender = (
+            <Week
+                classes={this.state.sortedClasses[this.state.tabValue]}
+                ClassSerializer={this.state.currentClassSerializer}
+            />
+        )
+
+        return (
+            <MuiThemeProvider theme={theme}>
+                <CssBaseline />
+                <Box>
+                    <Tabs
+                        value={this.state.tabValue}
+                        onChange={this.tabValueChange}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        centered
+                    >
+                        <Tab label="1 неделя" />
+                        <Tab label="2 неделя" />
+                    </Tabs>
+
+                    {weekToRender}
                 </Box>
-            </Box>
+            </MuiThemeProvider>
         )
     }
 
 }
 
-DesktopTimeTable.propTypes = {
+MobileTimeTable.propTypes = {
     universityClasses: PropTypes.array.isRequired,
 }
 
-export default withRouter(
-    withStyles(styles, { withTheme: true })(DesktopTimeTable)
-);
+export default withRouter(MobileTimeTable);

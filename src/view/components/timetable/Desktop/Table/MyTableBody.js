@@ -1,13 +1,18 @@
 import React from 'react';
+import {useSelector} from "react-redux";
 import PropTypes from 'prop-types';
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import TimeLine from "../TimeLine";
+import TimeLine from "../../TimeLine";
 
 const MyTableBody = (props) => {
-    const {showTimeLine,
-        classes, timeSlots, ClassSerializer} = props;
+    const {
+        showTimeLine,
+        classes, ClassSerializer
+    } = props;
+
+    const timeSlots = useSelector(state => state.timeSlots.data);
 
     return (
         <TableBody>
@@ -59,7 +64,6 @@ MyTableBody.propTypes = {
     showTimeLine: PropTypes.bool,
 
     classes: PropTypes.array.isRequired,
-    timeSlots: PropTypes.array,
     ClassSerializer: PropTypes.elementType.isRequired,
 }
 

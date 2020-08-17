@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const styles = makeStyles((theme) => ({
     timeLine: {
         border: "1px solid black",
-        minHeight: theme.spacing(5),
+        minHeight: theme.spacing(2.5),
     },
 }));
 

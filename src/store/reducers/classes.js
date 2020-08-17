@@ -13,6 +13,7 @@ const defaultState = {
         [filters.BY_GROUP]: {},
         [filters.BY_ROOM]: {},
         [filters.BY_TEACHER]: {},
+        [filters.BY_ID]: {},
 
         totalSize: 0,
     },
@@ -37,7 +38,8 @@ export default (state = defaultState, action) => {
                         ...state.data[action.filter],
                         [action.payload.apiPayload]: action.payload.classes
                     },
-                    totalSize: state.data.totalSize + 1,
+                    totalSize: state.data.totalSize +
+                        (Array.isArray(action.payload.classes) ? action.payload.classes.length : 1),
                 }
             }
 
@@ -51,13 +53,16 @@ export default (state = defaultState, action) => {
 
         case CLASSES_UNLOAD:
             let data = Object.assign({}, state.data);
+            let deletedSize = Array.isArray(data[action.filter][action.key]) ?
+                data[action.filter][action.key].length : 1
+
             delete data[action.filter][action.key];
 
             return {
                 ...state,
                 data: {
                     ...data,
-                    totalSize: state.data.totalSize - 1,
+                    totalSize: state.data.totalSize - deletedSize,
                 }
             }
 

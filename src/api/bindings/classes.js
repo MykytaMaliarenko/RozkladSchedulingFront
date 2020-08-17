@@ -11,6 +11,9 @@ const Classes = {
 
     getByTeacher: teacher =>
         requests.get(`${ApiPrefix}/teacher/${teacher}`),
+    
+    getById: id => 
+        requests.get(`${ApiPrefix}/${id}`)
 };
 
 export default Classes;

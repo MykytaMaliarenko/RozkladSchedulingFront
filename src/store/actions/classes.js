@@ -3,7 +3,8 @@ import api from '../../api'
 export const filters = {
     BY_GROUP: "BY_GROUP",
     BY_ROOM: "BY_ROOM",
-    BY_TEACHER: "BY_TEACHER"
+    BY_TEACHER: "BY_TEACHER",
+    BY_ID: "BY_ID"
 }
 
 export const FETCH_CLASSES_BEGIN = "FETCH_CLASSES_BEGIN";
@@ -75,7 +76,16 @@ export function fetchClassesByTeacherIfNeeded(teacher) {
 }
 
 
-const MAX_CLASSES_SIZE = 10;
+export function fetchClassByIdIfNeeded(id) {
+    return async (dispatch, getState) => {
+        let classesById = getState().classes.data[filters.BY_ID];
+        if (!classesById[id])
+            dispatch(fetchClasses(filters.BY_ID, api.Classes.getById, id))
+    }
+}
+
+
+const MAX_CLASSES_SIZE = 250;
 export const CLASSES_UNLOAD = "CLASSES_UNLOAD";
 export const classesUnload = (filter, key) => ({
     type: CLASSES_UNLOAD,
@@ -83,15 +93,26 @@ export const classesUnload = (filter, key) => ({
     key
 })
 
+const calculateClassesNumber = (filter, data) => {
+    if (filter === filters.BY_ID)
+        return Object.keys(data[filters.BY_ID]).length;
+    else {
+        return Object.keys(data[filter])
+            .map(key => data[filter][key].length)
+            .reduce((a, b) => a + b, 0)
+    }
+}
+
 export function unloadRandomClassIfNeeded() {
     return async (dispatch, getState) => {
         let totalSize = getState().classes.data.totalSize;
         if (totalSize >= MAX_CLASSES_SIZE) {
             let data = getState().classes.data;
             let filtersSortedBySize = Object.values(filters).sort(
-                (a, b) => Object.keys(data[b]).length - Object.keys(data[a]).length
+                (a, b) => calculateClassesNumber(b, data) - calculateClassesNumber(a, data)
             );
             dispatch(classesUnload(filtersSortedBySize[0], Object.keys(data[filtersSortedBySize[0]])[0]));
+            dispatch(unloadRandomClassIfNeeded());
         }
     }
 }
@@ -104,5 +125,6 @@ export default {
     fetchClassesByGroupIfNeeded,
     fetchClassesByRoomIfNeeded,
     fetchClassesByTeacherIfNeeded,
+    fetchClassByIdIfNeeded,
     filters,
 };

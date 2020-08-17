@@ -15,7 +15,6 @@ class Week extends React.Component {
 
                     <MyTableBody
                         classes={this.props.classes}
-                        timeSlots={this.props.timeSlots}
                         ClassSerializer={this.props.classSerializer}
                     />
                 </Table>
@@ -28,14 +27,6 @@ class Week extends React.Component {
 Week.propTypes = {
     classes: PropTypes.array.isRequired,
     classSerializer: PropTypes.elementType.isRequired,
-
-    timeSlots: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            timeStart: PropTypes.string.isRequired,
-            timeEnd: PropTypes.string.isRequired
-        }).isRequired
-    ),
 
     title: PropTypes.string.isRequired,
 }

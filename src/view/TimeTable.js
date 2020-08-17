@@ -12,6 +12,7 @@ import DesktopTimeTable from "./components/timetable/Desktop/index";
 import MobileTimeTable from "./components/timetable/Mobile/index";
 import {filters} from "../store/actions/classes";
 import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
 
 const mapStateToProps = state => {
     return {
@@ -97,7 +98,25 @@ class TimeTable extends React.Component {
 
         if (this.props.isFetching || !this.state.getClassesData)
             currentRenderState = (
-                <CircularProgress size="4rem" />
+                <Box>
+                    <BrowserView>
+                        <CircularProgress size="4rem" />
+                    </BrowserView>
+
+                    <MobileView>
+                        <Grid
+                            container
+                            direction="row"
+                            justify="center"
+                            alignItems="center"
+                            style={{ minHeight: 'calc(90vh - 86px)' }}
+                        >
+                            <Grid item>
+                                <CircularProgress size="4rem" />
+                            </Grid>
+                        </Grid>
+                    </MobileView>
+                </Box>
             )
         else if (this.props.hasError)
             currentRenderState = (

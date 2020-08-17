@@ -205,7 +205,7 @@ class ClassPreview extends React.Component {
                     values={groups}
                     valueRender={(value) => value.name}
                     open={this.state.dialogOpen}
-                    onGroupSelected={(value) => this.openGroupSchedule(value)}
+                    onSelected={(value) => this.openGroupSchedule(value)}
                     onClose={() => this.setState({
                         dialogOpen: false
                     })}

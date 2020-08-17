@@ -72,7 +72,7 @@ class ClassForBuilding extends React.Component {
                     values={rooms}
                     valueRender={(room) => room.name}
                     open={this.state.isDialogOpen}
-                    onGroupSelected={(room) => this.openRoomSchedule(room)}
+                    onSelected={(room) => this.openRoomSchedule(room)}
                     onClose={() => this.setState({
                         isDialogOpen: false
                     })}

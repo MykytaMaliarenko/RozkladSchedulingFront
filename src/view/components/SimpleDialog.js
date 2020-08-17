@@ -12,7 +12,7 @@ const SimpleDialog = (props) => {
     const {
         title, values,
         valueRender, open,
-        onClose, onGroupSelected
+        onClose, onSelected
     } = props;
 
 
@@ -32,9 +32,8 @@ const SimpleDialog = (props) => {
                     return (
                         <ListItem button key={renderedValue}>
                             <ListItemText
-                                onClick={() => onGroupSelected(value)}
+                                onClick={() => onSelected(value)}
                                 primary={renderedValue}
-                                inset
                             />
                         </ListItem>
                     )
@@ -51,7 +50,7 @@ SimpleDialog.propTypes = {
     valueRender: PropTypes.func,
 
     open: PropTypes.bool.isRequired,
-    onGroupSelected: PropTypes.func.isRequired,
+    onSelected: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
 };
 
